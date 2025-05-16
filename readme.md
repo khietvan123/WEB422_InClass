@@ -2,4 +2,4 @@
 
 In class lecture code and example
 
-[](https://giphy.com/gifs/funny-cat-mlvseq9yvZhba)
+[teehee](https://giphy.com/gifs/funny-cat-mlvseq9yvZhba)
