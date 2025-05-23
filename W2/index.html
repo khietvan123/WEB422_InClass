@@ -28,9 +28,57 @@
             fetch(url)
                 .then((res) => res.json())
                 .then((data) => {
-                console.log(data);
+
+                let postRows = `
+                    ${data.map(post => (
+                        `<tr data-id=${post.id}>
+                            <td>${post.userId}</td>
+                            <td>${post.title}</td>
+                            <td>${post.body}</td>
+                        </tr>`
+                    )).join('')}
+                    `;
+                document.querySelector('#postsTable tbody').innerHTML = postRows;
+
+                // add the "click" event listener to the newly created rows
+                document.querySelectorAll('#postsTable tbody tr').forEach((row) => {
+                // add the "click" event listener to the newly created rows
+                document.querySelectorAll('#postsTable tbody tr').forEach((row) => {
+                row.addEventListener('click', (e) => {
+                    let clickedId = row.getAttribute('data-id');
+                    console.log(clickedId);
+                    
+                    fetch(`https://jsonplaceholder.typicode.com/comments?postId=${clickedId}`)
+                        .then((res) => res.json())
+                        .then((data) => {
+                            //TODO: Generate a list of data
+                            let commentsList = `
+                                <ul class="list-group">
+                                    ${data.map(comment => (`
+                                    <li class="list-group-item">
+                                        ${comment.body}<br /><br />
+                                        <strong>Name:</strong> ${comment.name}<br />
+                                        <strong>Email:</strong> ${comment.email}<br />
+                                    </li>
+                                    `)).join('')}
+                                </ul>
+                                `;
+                                document.querySelector('#commentsModal .modal-body').innerHTML = commentsList;
+                                let myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
+                                backdrop: 'static', // default true - "static" indicates that clicking on the backdrop will not close the modal window
+                                keyboard: false, // default true - false indicates that pressing on the "esc" key will not close the modal window
+                                focus: true, // default true - this instructs the browser to place the modal window in focus when initialized
+                                });
+
+                                myModal.show();
+                            console.log(data);
+                        });
+                    });   
+                });
             });
-        }
+        });
+    };
+        
         document.addEventListener('DOMContentLoaded',()=>{
             console.log("DOM is ready");
             populatePostsTable();
